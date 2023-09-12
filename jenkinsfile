@@ -17,7 +17,7 @@ pipeline {
         stage('Invalidation') {
             steps {
                 withAWS(credentials: 'Aws-creds', region: 'ap-south-1') {
-                    sh 'aws cloudfront create-invalidation --distribution-id EG54EP0R0QFPK --paths "/*"'
+                    sh 'aws cloudfront create-invalidation --distribution-id E200B5YEPEW1JS--paths "/*"'
                 }
             }
         }
