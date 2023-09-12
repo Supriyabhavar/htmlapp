@@ -1,0 +1,35 @@
+pipeline {
+    agent any
+
+    // environment {
+    //     EXAMPLE_CREDS = credentials('Aws-creds')
+    // }
+    stages {
+        stage('Upload') {
+            steps {
+                withAWS(credentials: 'Aws-creds', region: 'ap-south-1') {
+                    sh 'aws s3 cp index.html s3://websitehostingsupriya/'
+                }
+                
+            }
+        }
+
+        stage('Invalidation') {
+            steps {
+                withAWS(credentials: 'Aws-creds', region: 'ap-south-1') {
+                    sh 'aws cloudfront create-invalidation --distribution-id EG54EP0R0QFPK --paths "/*"'
+                }
+            }
+        }
+    }
+
+    post {
+        success {
+            echo 'Build succeeded!'
+        }
+        failure {
+            echo 'Build failed!'
+        }
+    }
+
+}
